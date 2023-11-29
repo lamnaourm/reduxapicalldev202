@@ -1,23 +1,24 @@
-import logo from './logo.svg';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
+import { useEffect } from 'react';
+import { getProducts } from './redux/ProductSlice';
 
 function App() {
+
+  const dispatch = useDispatch()
+  const loading = useSelector(state => state.products.loading)
+  const products = useSelector(state => state.products.products)
+
+  useEffect(() => {
+    dispatch(getProducts())
+  }, [])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {loading ? <h1>En cours de chargement</h1> :
+        products.map(p =>
+          <h1>{p.title}</h1>
+        )
+      }
     </div>
   );
 }
